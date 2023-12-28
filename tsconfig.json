@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_moduels"
+  ]
+}

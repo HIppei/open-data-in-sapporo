@@ -1,0 +1,24 @@
+{
+  "name": "@i2i3i/open-data-in-sapporo",
+  "version": "0.9.0",
+  "description": "Open Data connector for Sapporo city.",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "i2i3i",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "rollup": "^4.9.1",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "crawler": "^1.4.0"
+  }
+}
