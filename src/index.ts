@@ -20,7 +20,9 @@ const odisap = async (
 
     if (!resource[resourceId]) throw new Error('Invalid resourceId');
 
-    const paramKeys = Object.keys(resource[resourceId as keyof typeof resource].param);
+    const paramKeys = Object.keys(
+      resource[resourceId as keyof typeof resource].param
+    );
 
     const searchParams = new URLSearchParams({
       resource_id: resourceId,

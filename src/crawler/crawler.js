@@ -113,7 +113,7 @@ const crawleGroup = (error, res, done) => {
   const group = res.request.uri.path.split('/')[2];
   output[group] = {};
 
-  const reg = new RegExp(`\/dataset\/${group}\/resource\/`);
+  const reg = new RegExp(`/dataset/${group}/resource/`);
 
   for (const el of Object.values(res.$('a'))) {
     const href = el.attribs?.href;

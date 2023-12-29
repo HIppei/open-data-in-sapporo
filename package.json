@@ -2,23 +2,47 @@
   "name": "@i2i3i/open-data-in-sapporo",
   "version": "0.9.0",
   "description": "Open Data connector for Sapporo city.",
-  "main": "index.js",
-  "scripts": {
-    "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "i2i3i",
   "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js,.ts,.mjs",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "keywords": [
+    "open data",
+    "node"
+  ],
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "eslint": "^8.56.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "3.1.1",
     "rollup": "^4.9.1",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "crawler": "^1.4.0"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts}": [
+      "npx prettier --write",
+      "npx eslint"
+    ]
   }
 }
