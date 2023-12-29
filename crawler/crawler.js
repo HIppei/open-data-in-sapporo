@@ -1,15 +1,16 @@
-import Crawler from 'crawler';
-import fs from 'fs';
+const Crawler = require('crawler');
+const fs = require('fs');
 
 const output = {};
-
 const host = 'https://ckan.pf-sapporo.jp';
-const fixedPath = '/dataset/';
-const groupList = ['statistics_sapporo'];
 
-const hrefList = [];
+const groupList = [];
+const typeList = [];
+const resourceList = [];
 
-let execution = 0;
+let tExecution = 0;
+let rExecution = 0;
+let pExecution = 0;
 
 /**
  *
@@ -18,7 +19,9 @@ let execution = 0;
  * @param {() => void} done
  * @returns
  */
-const crawleResource = (error, res, done) => {
+const crawleParams = (error, res, done) => {
+  pExecution++;
+
   if (error) {
     console.log(error);
     done();
@@ -71,9 +74,12 @@ const crawleResource = (error, res, done) => {
     output[group][resourceId] = { ...output[group][resourceId], param };
   }
 
-  execution++;
   // This notifies all resources crawlering finish and write json out
-  if (execution === hrefList.length) {
+  if (
+    groupList.length === tExecution &&
+    typeList.length === rExecution &&
+    resourceList.length === pExecution
+  ) {
     generateJson(JSON.stringify(output));
   }
 
@@ -92,8 +98,78 @@ const generateJson = (content) => {
 };
 
 // Collect all params corresponding to the resource_id
-const cRep = new Crawler({
+const cParams = new Crawler({
+  callback: crawleParams,
+});
+
+/**
+ *
+ * @param {Error} error
+ * @param {Crawler.CrawlerRequestResponse} res
+ * @param {() => void} done
+ * @returns
+ */
+const crawleResource = (error, res, done) => {
+  rExecution++;
+
+  if (error) {
+    console.log(error);
+    done();
+    return;
+  }
+  // Pick all href associated with resource_id
+  const group = res.request.uri.path.split('/')[2];
+  output[group] = {};
+
+  const reg = new RegExp(`/dataset/${group}/resource/`);
+
+  for (const el of Object.values(res.$('a'))) {
+    const href = el.attribs?.href;
+    if (href && reg.test(href) && resourceList.indexOf(href) === -1) {
+      resourceList.push(href);
+      const resourceId = href.split('/')[4];
+      output[group][resourceId] = { title: el.attribs?.title };
+      cParams.queue(`${host}${href}`);
+    }
+  }
+
+  done();
+};
+
+const cResource = new Crawler({
   callback: crawleResource,
+});
+
+/**
+ *
+ * @param {Error} error
+ * @param {Crawler.CrawlerRequestResponse} res
+ * @param {() => void} done
+ * @returns
+ */
+const crawleType = (error, res, done) => {
+  tExecution++;
+
+  if (error) {
+    console.log(error);
+    done();
+    return;
+  }
+  const $ = res.$;
+  const typeHrefs = $('h2.dataset-heading');
+
+  typeHrefs.find('a').each((_i, el) => {
+    const href = el.attribs?.href;
+    if (!href || typeList.indexOf(href) > 0) return;
+    typeList.push(href);
+    cResource.queue(`${host}${href}`);
+  });
+
+  done();
+};
+
+const cType = new Crawler({
+  callback: crawleType,
 });
 
 /**
@@ -109,31 +185,22 @@ const crawleGroup = (error, res, done) => {
     done();
     return;
   }
-  // Pick all href associated with resource_id
-  const group = res.request.uri.path.split('/')[2];
-  output[group] = {};
 
-  const reg = new RegExp(`/dataset/${group}/resource/`);
+  const $ = res.$;
+  const groupHrefs = $('a');
 
-  for (const el of Object.values(res.$('a'))) {
+  const reg = /group/;
+
+  for (const el of Object.values(groupHrefs)) {
     const href = el.attribs?.href;
-    if (href && reg.test(href) && hrefList.indexOf(href) === -1) {
-      hrefList.push(href);
-      const resourceId = href.split('/')[4];
-      output[group][resourceId] = { title: el.attribs?.title };
-    }
+    if (!href || !reg.test(href) || groupList.indexOf(href) > 0) continue;
+    groupList.push(href);
+    cType.queue(href);
   }
-
-  for (const href of hrefList) cRep.queue(`${host}${href}`);
 
   done();
 };
 
-const c = new Crawler({
-  callback: crawleGroup,
-});
+const cGroup = new Crawler({ callback: crawleGroup });
 
-// Crawle each group such as economics, health and traffic,,,
-groupList.forEach((path) => {
-  c.queue({ uri: `${host}${fixedPath}${path}` });
-});
+cGroup.queue({ uri: 'https://data.pf-sapporo.jp/' });

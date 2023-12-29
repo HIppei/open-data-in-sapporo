@@ -21,6 +21,7 @@ const odisap = async (
     if (!resource[resourceId]) throw new Error('Invalid resourceId');
 
     const paramKeys = Object.keys(
+      // @ts-expect-error because param must be inffered as keys
       resource[resourceId as keyof typeof resource].param
     );
 
