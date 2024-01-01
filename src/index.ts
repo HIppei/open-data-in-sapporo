@@ -11,25 +11,30 @@ const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
 };
 
 /**
- * @param group - openData group name
- * @param resourceId - openData resourceId
- * @param params - openData params
- * @param limit - openData limit
+ * @param group - Refer to open-data.json
+ * @param resourceId - Refer to opne-data.json
+ * @param params - Refer to open-data.json
+ * @param limit - openData limit(default: 100)
  * @returns
  * data or null
+ *
+ * @remarks
+ * Please follow the examples in the README.md.
+ *
  */
 const odisap = async (
-  group: keyof typeof openData,
+  group: string,
   resourceId: string,
   { params, limit = 100 }: { params?: Record<string, string>; limit?: number }
 ) => {
   try {
-    const resource = openData[group];
+    if (!(group in Object.keys(openData))) throw new Error('Invalid group');
 
+    const resource = openData[group as keyof typeof openData];
     if (!resource[resourceId]) throw new Error('Invalid resourceId');
 
     const paramKeys = Object.keys(
-      // @ts-expect-error because param must be inffered as keys
+      // @ts-expect-error resource[resourceId] is not undefined
       resource[resourceId as keyof typeof resource].param
     );
 

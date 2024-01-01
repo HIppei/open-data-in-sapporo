@@ -53,6 +53,10 @@ const func = async () => {
 console.log(await func());
 ```
 
+## Properties
+
+Refer to the [docs](./docs//README.md).
+
 ## Notice
 
 The [data list](./open-data.json) still has some space to develop. So there are a few attributes which haven't been implemented in the current version. Future functino will apply those developing parts.

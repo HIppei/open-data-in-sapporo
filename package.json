@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "rollup -c && cp ./open-data.json ./dist",
-    "lint": "eslint --ext .js,.ts,.mjs",
+    "lint": "eslint . --ext .js,.ts,.mjs",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
@@ -38,6 +38,8 @@
     "prettier": "3.1.1",
     "rollup": "^4.9.1",
     "tslib": "^2.6.2",
+    "typedoc": "^0.25.5",
+    "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
