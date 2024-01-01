@@ -26,10 +26,11 @@ This [Json file](./open-data.json) lists all data up. Next example will show you
 import odisa from '@i2i3i/open-data-in-sapporo';
 
 const func = async () => {
-  const result = await odisap(
+  const res = await odisa(
     'statistics_sapporo',
     '821c83f6-492b-44db-bbde-fca9d2774645'
   );
+  return res.result;
 };
 
 console.log(await func());
@@ -37,19 +38,21 @@ console.log(await func());
 
 - Example 2
 
-  This one denotes Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with Params and Limit 50 data counts.
+  This one denotes Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with Params.
+
+  Caution to use `q` as key name for the parameter object.
 
 ```typescript
 import odisa from '@i2i3i/open-data-in-sapporo';
 
 const func = async () => {
-  const result = await odisap(
+  const res = await odisa(
     'statistics_sapporo',
     '821c83f6-492b-44db-bbde-fca9d2774645',
-    { params: { '年　度': '2008年度' }, limit: 50 }
+    { q: '2008年度' }
   );
+  return res.result;
 };
-
 console.log(await func());
 ```
 

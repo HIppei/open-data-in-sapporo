@@ -2,13 +2,13 @@ import openData from '../open-data.json';
 
 const hostUrl = 'https://ckan.pf-sapporo.jp/api/3/action/datastore_search';
 
-const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
-  if (!obj) return undefined;
-  return arr.reduce((acc, record) => {
-    if (record in obj) acc[record] = obj[record];
-    return acc;
-  }, {});
-};
+// const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
+//   if (!obj) return undefined;
+//   return arr.reduce((acc, record) => {
+//     if (record in obj) acc[record] = obj[record];
+//     return acc;
+//   }, {});
+// };
 
 /**
  * @param group - Refer to open-data.json
@@ -25,23 +25,25 @@ const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
 const odisap = async (
   group: string,
   resourceId: string,
-  { params, limit = 100 }: { params?: Record<string, string>; limit?: number }
+  params?: Record<string, string>,
+  limit: number = 100
 ) => {
   try {
-    if (!(group in Object.keys(openData))) throw new Error('Invalid group');
+    if (!Object.keys(openData).includes(group))
+      throw new Error('Invalid group');
 
     const resource = openData[group as keyof typeof openData];
     if (!resource[resourceId]) throw new Error('Invalid resourceId');
 
-    const paramKeys = Object.keys(
-      // @ts-expect-error resource[resourceId] is not undefined
-      resource[resourceId as keyof typeof resource].param
-    );
+    // const paramKeys = Object.keys(
+    //   // @ts-expect-error resource[resourceId] is not undefined
+    //   resource[resourceId as keyof typeof resource].param
+    // );
 
     const searchParams = new URLSearchParams({
       resource_id: resourceId,
       limit: `${limit}`,
-      ...pickParams(params, paramKeys),
+      q: params?.q || '',
     });
 
     const url = `${hostUrl}?${searchParams.toString()}`;

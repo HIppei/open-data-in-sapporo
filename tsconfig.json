@@ -3,6 +3,7 @@
     "declarationDir": "dist",
     "lib": [
       "ES2015",
+      "ESNext",
       "DOM"
     ],
     "module": "ESNext",
