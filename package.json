@@ -4,18 +4,22 @@
   "description": "Open Data connector for Sapporo city.",
   "author": "i2i3i",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/cjs/index.js"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HIppei/open-data-in-sapporo"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
   },
   "scripts": {
-    "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src --ext .js,.ts,.mjs",
+    "build": "rollup -c && cp ./open-data.json ./dist",
+    "lint": "eslint --ext .js,.ts,.mjs",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
@@ -41,9 +45,7 @@
   },
   "lint-staged": {
     "*.{js,mjs,ts}": [
-      "npx prettier --write"
-    ],
-    "src/**/*.{js,mjs,ts}": [
+      "npx prettier --write",
       "npx eslint"
     ]
   }

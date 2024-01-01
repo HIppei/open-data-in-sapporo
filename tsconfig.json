@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "declarationDir": "dist",
     "lib": [
       "ES2015",
       "DOM"
     ],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
+    "declaration": true,
     "esModuleInterop": true
   },
   "include": [

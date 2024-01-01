@@ -1,5 +1,5 @@
-const Crawler = require('crawler');
-const fs = require('fs');
+import Crawler from 'crawler';
+import fs from 'fs';
 
 const output = {};
 const host = 'https://ckan.pf-sapporo.jp';
@@ -204,3 +204,5 @@ const crawleGroup = (error, res, done) => {
 const cGroup = new Crawler({ callback: crawleGroup });
 
 cGroup.queue({ uri: 'https://data.pf-sapporo.jp/' });
+
+export {};

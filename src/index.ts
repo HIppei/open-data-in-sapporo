@@ -9,11 +9,19 @@ const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
     return acc;
   }, {});
 };
+
+/**
+ * @param group - openData group name
+ * @param resourceId - openData resourceId
+ * @param params - openData params
+ * @param limit - openData limit
+ * @returns
+ * data or null
+ */
 const odisap = async (
   group: keyof typeof openData,
   resourceId: string,
-  params?: Record<string, string>,
-  limit = 100
+  { params, limit = 100 }: { params?: Record<string, string>; limit?: number }
 ) => {
   try {
     const resource = openData[group];
@@ -32,15 +40,12 @@ const odisap = async (
     });
 
     const url = `${hostUrl}?${searchParams.toString()}`;
-    console.log(url);
-    // const res = await fetch(url);
-
-    // return await res.json();
+    const res = await fetch(url);
+    return await res.json();
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
 
 export default odisap;
-
-odisap('statistics_sapporo', '821c83f6-492b-44db-bbde-fca9d2774645');
