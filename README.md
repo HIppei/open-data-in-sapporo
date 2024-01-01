@@ -14,13 +14,13 @@ I have made a SDK to access easily the data even though api endpoints are alread
 npm i @i2i3i/open-data-in-sapporo
 ```
 
-- Data available
+- Group, Resource id and Params
 
-This [Json file](./open-data.json) lists all data up. Next example will show you how to use.
+This [Json file](./open-data.json) lists all data up. Next example will show you how to use those data.
 
 - Example 1
 
-This example indicates group `statistics_sapporo`, resource `821c83f6-492b-44db-bbde-fca9d2774645` with no parameters.
+  This example indicates Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with no Params.
 
 ```typescript
 import odisa from '@i2i3i/open-data-in-sapporo';
@@ -37,7 +37,7 @@ console.log(await func());
 
 - Example 2
 
-This one denotes group `statistics_sapporo`, resource `821c83f6-492b-44db-bbde-fca9d2774645` with a parameter and limit 50 data counts.
+  This one denotes Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with Params and Limit 50 data counts.
 
 ```typescript
 import odisa from '@i2i3i/open-data-in-sapporo';
