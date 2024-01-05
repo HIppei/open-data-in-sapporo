@@ -32,11 +32,15 @@ const makeFilters = (
 const odisap = async (
   group: string,
   resourceId: string,
-  params?: Record<string, string | number>,
-  limit: number = 100,
-  offset: number = 0
+  options: {
+    params?: Record<string, string | number>;
+    limit?: number;
+    offset?: number;
+  } = { limit: 100, offset: 0 }
 ) => {
   try {
+    const { params, limit, offset } = options;
+
     if (!Object.keys(openData).includes(group))
       throw new Error('Invalid group');
 

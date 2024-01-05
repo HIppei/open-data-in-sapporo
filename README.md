@@ -18,41 +18,55 @@ npm i @i2i3i/open-data-in-sapporo
 
 This [Json file](./open-data.json) lists all data up. Next example will show you how to use those data.
 
-- Example 1
+- Examples
 
-  This example indicates Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with no Params.
+  This example indicates Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with several options.
 
 ```typescript
 import odisap from '@i2i3i/open-data-in-sapporo';
 
-const func = async () => {
-  const result = await odisap(
+// With no optinos
+const func1 = async () => {
+  const res = await odisap(
     'statistics_sapporo',
     '821c83f6-492b-44db-bbde-fca9d2774645'
   );
-  return result;
+
+  console.log('result', res.result);
+  console.log('records', res.result.records);
 };
 
-console.log(await func());
-```
+await func1();
 
-- Example 2
-
-  This one denotes Group `statistics_sapporo`, Resource id `821c83f6-492b-44db-bbde-fca9d2774645` with Params.
-
-```typescript
-import odisap from '@i2i3i/open-data-in-sapporo';
-
-const func = async () => {
-  const result = await odisap(
+// With options (limit, offset)
+const func2 = async () => {
+  const res = await odisap(
     'statistics_sapporo',
     '821c83f6-492b-44db-bbde-fca9d2774645',
-    { '年　度': 2008 }
+    { limit: 5, offset: 3 }
   );
-  return result;
+
+  console.log('result', res.result);
+  console.log('records', res.result.records);
 };
 
-console.log(await func());
+await func2();
+
+// With options (params)
+const func3 = async () => {
+  const res = await odisap(
+    'statistics_sapporo',
+    '821c83f6-492b-44db-bbde-fca9d2774645',
+    {
+      params: { '年　度': '2008年度' },
+    }
+  );
+
+  console.log('result', res.result);
+  console.log('records', res.result.records);
+};
+
+await func3();
 ```
 
 ## Properties
@@ -61,4 +75,4 @@ Refer to the [docs](./docs//README.md).
 
 ## Notice
 
-The [data list](./open-data.json) still has some space to develop. So there are a few attributes which haven't been implemented in the current version. Future functino will apply those developing parts.
+The [data list](./open-data.json) still has some space to develop. So there are a few attributes which haven't been implemented yet in the current version. Future function will apply those developing parts.
