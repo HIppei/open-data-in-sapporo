@@ -6,6 +6,8 @@ Sapporo city, Hokkaido opens public data for developing Smart City Sapporo.
 
 I have made a SDK to access easily the data even though api endpoints are already accessible in the page above.
 
+One remarkable point is that I have curated api endpoints and params using [crawler](https://www.npmjs.com/package/crawler). If you are interested in that method, please refer to the [file](https://github.com/HIppei/open-data-in-sapporo/blob/main/crawler/crawler.js).
+
 ## Usage
 
 - Install
@@ -16,7 +18,7 @@ npm i @i2i3i/open-data-in-sapporo
 
 - Group, Resource id and Params
 
-This [Json file](./open-data.json) lists all data up. Next example will show you how to use those data.
+This [Json file](./open-data.json) lists up all data which were curated by the abovementioned method. Next example will show you how to use those data.
 
 - Examples
 
