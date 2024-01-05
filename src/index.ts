@@ -2,19 +2,26 @@ import openData from '../open-data.json';
 
 const hostUrl = 'https://ckan.pf-sapporo.jp/api/3/action/datastore_search';
 
-// const pickParams = (obj: Record<string, string> | undefined, arr: string[]) => {
-//   if (!obj) return undefined;
-//   return arr.reduce((acc, record) => {
-//     if (record in obj) acc[record] = obj[record];
-//     return acc;
-//   }, {});
-// };
+const makeFilters = (
+  params: Record<string, string | number> | undefined,
+  paramsFormat: Record<string, string>
+) => {
+  if (!params) return {};
+  const keys = Object.keys(paramsFormat);
+
+  return keys.reduce((acc, key) => {
+    if (key in params && typeof params[key] === typeof paramsFormat[key])
+      acc[key] = params[key];
+    return acc;
+  }, {});
+};
 
 /**
  * @param group - Refer to open-data.json
  * @param resourceId - Refer to opne-data.json
  * @param params - Refer to open-data.json
  * @param limit - openData limit(default: 100)
+ * @param offset - Offset to start(default: 0)
  * @returns
  * data or null
  *
@@ -25,8 +32,9 @@ const hostUrl = 'https://ckan.pf-sapporo.jp/api/3/action/datastore_search';
 const odisap = async (
   group: string,
   resourceId: string,
-  params?: Record<string, string>,
-  limit: number = 100
+  params?: Record<string, string | number>,
+  limit: number = 100,
+  offset: number = 0
 ) => {
   try {
     if (!Object.keys(openData).includes(group))
@@ -35,19 +43,22 @@ const odisap = async (
     const resource = openData[group as keyof typeof openData];
     if (!resource[resourceId]) throw new Error('Invalid resourceId');
 
-    // const paramKeys = Object.keys(
-    //   // @ts-expect-error resource[resourceId] is not undefined
-    //   resource[resourceId as keyof typeof resource].param
-    // );
+    const filters = makeFilters(params, resource[resourceId].param);
 
-    const searchParams = new URLSearchParams({
+    const headers = { 'content-type': 'application/json' };
+    const body = JSON.stringify({
       resource_id: resourceId,
-      limit: `${limit}`,
-      q: params?.q || '',
+      filters,
+      limit,
+      offset,
     });
 
-    const url = `${hostUrl}?${searchParams.toString()}`;
-    const res = await fetch(url);
+    const res = await fetch(hostUrl, {
+      method: 'POST',
+      headers,
+      body,
+    });
+
     return await res.json();
   } catch (err) {
     console.log(err);

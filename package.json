@@ -21,7 +21,8 @@
     "build": "rollup -c && cp ./open-data.json ./dist",
     "lint": "eslint . --ext .js,.ts,.mjs",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "genDoc": "typedoc"
   },
   "keywords": [
     "open data",
