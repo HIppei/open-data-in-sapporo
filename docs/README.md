@@ -12,17 +12,17 @@
 
 ### default
 
-▸ **default**(`group`, `resourceId`, `«destructured»`): `Promise`\<`any`\>
+▸ **default**(`group`, `resourceId`, `params?`, `limit?`, `offset?`): `Promise`\<`any`\>
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `group` | `string` | `undefined` | openData group name |
-| `resourceId` | `string` | `undefined` | openData resourceId |
-| `«destructured»` | `Object` | `undefined` | - |
-| › `limit?` | `number` | `100` | - |
-| › `params?` | `Record`\<`string`, `string`\> | `undefined` | - |
+| `group` | `string` | `undefined` | Refer to open-data.json |
+| `resourceId` | `string` | `undefined` | Refer to opne-data.json |
+| `params?` | `Record`\<`string`, `string` \| `number`\> | `undefined` | Refer to open-data.json |
+| `limit` | `number` | `100` | openData limit(default: 100) |
+| `offset` | `number` | `0` | Offset to start(default: 0) |
 
 #### Returns
 
@@ -30,6 +30,10 @@
 
 data or null
 
+**`Remarks`**
+
+Please follow the examples in the README.md.
+
 #### Defined in
 
-[index.ts:21](https://github.com/HIppei/open-data-in-sapporo/blob/ed6659d/src/index.ts#L21)
+[index.ts:32](https://github.com/HIppei/open-data-in-sapporo/blob/d1fdf0a/src/index.ts#L32)
