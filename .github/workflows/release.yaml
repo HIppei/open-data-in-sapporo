@@ -1,0 +1,20 @@
+name: Release npm package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: '8.14.0'
+          registry: 'https://registry.npmjs.org'
+          auth-token: ${{ secrets.NPM_TOKEN }}
+      - run: pnpm i
+      # - run: pnpm test-all
+      - run: pnpm build
+      - run: pnpm publish --access public
